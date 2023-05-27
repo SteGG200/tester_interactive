@@ -6,13 +6,13 @@ class Communication:
 		self.source = source
 		self.log = open("./communication.log", "w+")
 	
-	def eof(self, buffer : str, end : list[str]):
+	def eof(self, buffer, end):
 		if(buffer.strip() in end):
 			self.log.writelines(f"End the communication after receive \'{buffer}\'.\n")
 			return True
 		return False
 
-	def communicate(self, end : list[str], source_first = False):
+	def communicate(self, end, source_first = False):
 		checker_process = subprocess.Popen(self.checker, shell = True, stdin = subprocess.PIPE, stdout = subprocess.PIPE)
 		source_process = subprocess.Popen(self.source, shell = True, stdin = subprocess.PIPE, stdout = subprocess.PIPE)
 		
