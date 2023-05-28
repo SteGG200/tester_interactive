@@ -8,7 +8,7 @@ class Communication:
 	
 	def eof(self, buffer, end):
 		if(buffer.strip() in end):
-			self.log.writelines(f"End the communication after receive \'{buffer}\'.\n")
+			self.log.writelines(f"End the communication after receive \'{buffer.strip()}\'.\n")
 			return True
 		return False
 
@@ -23,18 +23,18 @@ class Communication:
 			if(source_first): #source go first
 				buffer = source_process.stdout.readline().decode()
 				source_process.stdout.flush()
-				if self.eof(buffer, end) : break
 				self.log.writelines(f"Source: {buffer.strip()}\n")
 				checker_process.stdin.write(buffer.encode())
 				checker_process.stdin.flush()
+				if self.eof(buffer, end) : break
 				source_first ^= True
 			else: 
 				buffer = checker_process.stdout.readline().decode()
 				checker_process.stdout.flush()
-				if self.eof(buffer, end) : break
 				self.log.writelines(f"Checker: {buffer.strip()}\n")
 				source_process.stdin.write(buffer.encode())
 				source_process.stdin.flush()
+				if self.eof(buffer, end) : break
 				source_first ^= True
 		
 		#End communation and kill process
